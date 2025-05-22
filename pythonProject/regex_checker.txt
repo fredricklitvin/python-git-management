@@ -1,0 +1,109 @@
+# Passwords & Secrets
+Generic_Password:(?i)(password|pass|pwd)[\s:=\"']{1,6}[^\s\"']{4,100}
+Generic_Secret:(?i)(secret|secrets|token)[\s:=\"']{1,6}[^\s\"']{4,100}
+Private_Key_Header:-----BEGIN (RSA|DSA|EC|OPENSSH|PGP|PRIVATE|ENCRYPTED) PRIVATE KEY-----
+JWT_Token:eyJ[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+
+
+# AWS
+AWS_Access_Key:AKIA[0-9A-Z]{16}
+AWS_Secret_Access_Key:(?i)aws_secret_access_key[^\\n]{0,100}
+AWS_Session_Token:(?i)aws_session_token[^\\n]{0,100}
+
+# GitHub
+GitHub_PAT:ghp_[A-Za-z0-9]{36}
+GitHub_OAuth:gho_[A-Za-z0-9]{36}
+GitHub_FineGrained:github_pat_[A-Za-z0-9_]{22,255}
+
+# Google
+Google_API_Key:AIza[0-9A-Za-z\\-_]{35}
+Google_OAuth_Token:1\/\/[0-9a-zA-Z\-_]+
+
+# Slack
+Slack_Bot_Token:xoxb-[0-9]{10,13}-[0-9]{10,13}-[a-zA-Z0-9]{24,32}
+Slack_User_Token:xoxp-[0-9]{10,13}-[0-9]{10,13}-[a-zA-Z0-9]{24,32}
+
+# Stripe
+Stripe_Secret:sk_live_[0-9a-zA-Z]{24}
+Stripe_Publishable:pk_live_[0-9a-zA-Z]{24}
+
+# Twilio
+Twilio_SID:AC[a-zA-Z0-9]{32}
+Twilio_AuthToken:[a-f0-9]{32}
+
+# Firebase
+Firebase_API_Key:AIza[0-9A-Za-z\\-_]{35}
+
+# SendGrid
+SendGrid_API_Key:SG\.[A-Za-z0-9_\-\.]{22,66}
+
+# Mailgun
+Mailgun_API_Key:key-[0-9a-zA-Z]{32}
+
+# Heroku
+Heroku_API_Key:heroku_[0-9a-fA-F]{32}
+
+# Facebook
+Facebook_Access_Token:EAACEdEose0cBA[0-9A-Za-z]+
+
+# DigitalOcean
+DigitalOcean_API_Token:do[a-z0-9]{64}
+
+# Dropbox
+Dropbox_Token:sl\.[a-z0-9\-_]{26,99}
+
+# Telegram
+Telegram_Bot_Token:[0-9]{8,10}:[a-zA-Z0-9_-]{35}
+
+# Shopify
+Shopify_API_Key:shpss_[a-fA-F0-9]{32}
+
+# Azure
+Azure_Client_Secret:(?i)azure_client_secret[^\\n]{0,100}
+Azure_Tenant_ID:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}
+# JSON Web Token
+JWT_Bearer_Token:(?i)authorization[:=]\s*["']?Bearer\s+eyJ[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+
+
+# Generic Tokens
+Access_Token:(?i)(access_token|auth_token)[\s:=\"']{1,6}[^\s\"']{10,100}
+Refresh_Token:(?i)(refresh_token)[\s:=\"']{1,6}[^\s\"']{10,100}
+
+# SSH Keys
+OpenSSH_Private_Key:-----BEGIN OPENSSH PRIVATE KEY-----
+DSA_Private_Key:-----BEGIN DSA PRIVATE KEY-----
+EC_Private_Key:-----BEGIN EC PRIVATE KEY-----
+
+# Certificates
+TLS_Private_Key:-----BEGIN PRIVATE KEY-----
+TLS_Certificate:-----BEGIN CERTIFICATE-----
+
+# Database credentials
+Postgres_URL:(?i)postgres(?:ql)?://[^\\s\"']{10,}
+MongoDB_URL:(?i)mongodb(?:\+srv)?:\/\/[^\\s\"']{10,}
+MySQL_URL:(?i)mysql:\/\/[^\\s\"']{10,}
+
+# Basic Auth
+Basic_Auth_Credentials:(?i)authorization[:=]\s*["']?Basic\s+[A-Za-z0-9=:+\/]{10,100}
+
+# SSH Host Keys
+SSH_Host_Key:(?i)(ssh-(rsa|ed25519)|ecdsa-sha2-nistp256)\s+[A-Za-z0-9+/=]+
+
+# NPM Tokens
+NPM_Token:(?i)//registry\.npmjs\.org/:_authToken=[a-z0-9-]{36}
+
+# GitLab
+GitLab_PAT:glpat-[A-Za-z0-9\-_]{20,}
+
+# Bitbucket
+Bitbucket_App_Password:bb[a-z0-9]{38}
+
+# Cloudflare
+Cloudflare_API_Key:(?i)cf_api_key[\s:=\"']{1,6}[^\s\"']{20,100}
+Cloudflare_Email:(?i)cf_email[\s:=\"']{1,6}[^\s\"']{5,100}
+
+# Jenkins
+Jenkins_Credential_ID:(?i)(jenkins[_-]?)?cred(ential)?s?[\s:=\"']{1,6}[a-zA-Z0-9-_]{4,}
+
+# Stripe Test Keys (also useful)
+Stripe_Test_Secret:sk_test_[0-9a-zA-Z]{24}
+Stripe_Test_Publishable:pk_test_[0-9a-zA-Z]{24}
+

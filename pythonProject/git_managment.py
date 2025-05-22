@@ -1,4 +1,4 @@
-from fileinput import close
+
 
 import requests
 import questionary
