@@ -1,55 +1,64 @@
 
-
 import requests
 import questionary
 
-def describe_repositories():
-    try:
+def find_repositories():
+    search_choice = questionary.select(
+        "Search by:",
+        choices=["User name", "Organization name", "exit"]
+    ).ask()
+    if search_choice == "User name":
+        print("user")
+        user = input("please write the user you want to search for: \n")
+        list_repositories = requests.get("{}/users/{}/repos".format(url, user), headers=headers)
+        if list_repositories.status_code == 200:
+            return user
+        else:
+            print(f" Failed to fetch repos: {list_repositories.status_code}")
+            print(list_repositories.text)
+            return None
 
-         search_choice = questionary.select(
-             "Search by:",
-             choices=["User name", "Organization name", "exit"]
-         ).ask()
-         if search_choice == "User name":
-             print("user")
-             user = input("please write the user you want to search for: \n")
-             list_repositories = requests.get("{}/users/{}/repos".format(url, user),headers=headers)
-         elif search_choice == "Organization name":
-             print("orgs")
-             user = input("please write the organization you want to search for: \n")
-             list_repositories = requests.get("{}/orgs/{}/repos".format(url, user),headers=headers)
-         else:
-             return 0,0,0,None
-         if list_repositories.status_code == 200:
-              listed_repositories = []
-              for i in list_repositories.json():
-                   listed_repositories.append(i["name"])
+    elif search_choice == "Organization name":
+        print("orgs")
+        user = input("please write the organization you want to search for: \n")
+        list_repositories = requests.get("{}/orgs/{}/repos".format(url, user), headers=headers)
+        if list_repositories.status_code == 200:
+            return user
+        else:
+            print(f" Failed to fetch repos: {list_repositories.status_code}")
+            print(list_repositories.text)
+            return None
+    else:
+        return None
+def describe_repositories(user = None):
+        list_repositories = requests.get("{}/users/{}/repos".format(url, user),headers=headers)
+        if list_repositories.status_code == 200:
+            listed_repositories = []
+            for i in list_repositories.json():
+                listed_repositories.append(i["name"])
 
-              listing_repo = questionary.select(
-                      "Choose action:",
-                      choices=listed_repositories
-                  ).ask()
-              issues_repository = requests.get("{}/repos/{}/{}/issues".format(url,user,listing_repo),headers=headers)
-              issues_only = [issue for issue in issues_repository.json() if 'pull_request' not in issue]
-              commit_message = requests.get("{}/repos/{}/{}/commits".format(url,user,listing_repo),headers=headers)
-              pull_requests = requests.get("{}/repos/{}/{}/pulls".format(url,user,listing_repo),headers=headers)
-              for i in list_repositories.json():
-                   if listing_repo == (i["name"]):
-                        print(f"Repository name: {i['name']}"
-                              f"\nDescription: {i['description']}"
-                              f"\nOpen Issues: {len(issues_only)}"
-                              f"\nLast Push: {i['pushed_at']}"
-                              f"\nCommit message: {commit_message.json()[0]['commit']['message']}"
-                              f"\nPull requests:  {len(pull_requests.json())}"
-                              f"\nClone: git clone {i['clone_url']}")
-                        return listing_repo,len(issues_only),len(pull_requests.json()),user
-         else:
-              print(f" Failed to fetch repos: {list_repositories.status_code}")
-              print(list_repositories.text)
-              return 0,0,0,None
-    except ValueError:
-         print("We couldn't find the username, please try again")
-         return 0,0,0,None
+            listing_repo = questionary.select(
+                    "Choose action:",
+                    choices=listed_repositories
+                ).ask()
+            issues_repository = requests.get("{}/repos/{}/{}/issues".format(url,user,listing_repo),headers=headers)
+            issues_only = [issue for issue in issues_repository.json() if 'pull_request' not in issue]
+            commit_message = requests.get("{}/repos/{}/{}/commits".format(url,user,listing_repo),headers=headers)
+            pull_requests = requests.get("{}/repos/{}/{}/pulls".format(url,user,listing_repo),headers=headers)
+            for i in list_repositories.json():
+                if listing_repo == (i["name"]):
+                    print(f"Repository name: {i['name']}"
+                            f"\nDescription: {i['description']}"
+                            f"\nOpen Issues: {len(issues_only)}"
+                            f"\nLast Push: {i['pushed_at']}"
+                            f"\nCommit message: {commit_message.json()[0]['commit']['message']}"
+                            f"\nPull requests:  {len(pull_requests.json())}"
+                            f"\nClone: git clone {i['clone_url']}")
+                    return listing_repo,len(issues_only),len(pull_requests.json())
+            else:
+                print(f" Failed to fetch repos: {list_repositories.status_code}")
+                print(list_repositories.text)
+                return 0,0,0
 
 def inspect_issues(user = None):
     issues_repository = requests.get("{}/repos/{}/{}/issues".format(url, user, listing_repo), headers=headers)
@@ -133,13 +142,16 @@ def inspect_pull_requests(user = None):
             print("Merging wasn't allowed ")
 
 
-# user = "fredricklitvin"
 url = "https://api.github.com"
 
 try:
-    with open("git_key.txt") as token_file:
+    with open("my_secret_git_key.txt") as token_file:
         headers = {
             "Authorization": f"token {token_file.read().strip()}"
+
+    # with open("git_key.txt") as token_file:
+    #     headers = {
+    #         "Authorization": f"token {token_file.read().strip()}"
         }
 except FileNotFoundError:
     print("Token file not found.")
@@ -151,7 +163,7 @@ stop_menu = False
 
 while not stop_menu :
 
-
+    print(headers)
     management_options = ['Exit']
     open_issues = []
     open_pull_requests = []
@@ -160,11 +172,12 @@ while not stop_menu :
 
     main_menu = questionary.select(
         "Hello, please choose an action :",
-        choices=["Search and describe repositories","exit"]
+        choices=["Search and describe repositories","Search for secrets","exit"]
     ).ask()
 
     if main_menu == "Search and describe repositories":
-        listing_repo, len_issues ,len_pull_requests,user = describe_repositories()
+        user =  find_repositories()
+        listing_repo, len_issues ,len_pull_requests = describe_repositories(user = user)
         if len_issues > 0:
             management_options.append('Check issues')
         if len_pull_requests > 0:
@@ -179,5 +192,7 @@ while not stop_menu :
             elif manage_repo == 'Check pull requests':
                 inspect_pull_requests(user)
 
+    elif  main_menu == "Search for secrets":
+        print("hi")
     else:
         stop_menu = True
