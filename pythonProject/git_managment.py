@@ -1,3 +1,5 @@
+import shutil
+
 import scan_git
 import requests
 import questionary
@@ -192,6 +194,9 @@ while not stop_menu :
                 inspect_pull_requests(user)
 
     elif  main_menu == "Search for secrets":
-        print("hi")
+        found_secrets = scan_git.scan_log()
+        for things in found_secrets:
+            print(things)
+        shutil.rmtree('./test_project', onerror=scan_git.force_remove_readonly)
     else:
         stop_menu = True
