@@ -22,13 +22,15 @@ def force_remove_readonly(func, path, exc_info):
     os.chmod(path, stat.S_IWRITE)
     func(path)
 
-found_secrets = []
 
-scan_log()
-for things in found_secrets:
-    print(things)
+if __name__ == "__main__":
+    found_secrets = []
+
+    scan_log()
+    for things in found_secrets:
+        print(things)
 
 
-shutil.rmtree('./test_project', onerror=force_remove_readonly)
+    shutil.rmtree('./test_project', onerror=force_remove_readonly)
 
 

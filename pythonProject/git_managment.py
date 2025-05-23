@@ -1,4 +1,4 @@
-
+import scan_git
 import requests
 import questionary
 
@@ -163,7 +163,6 @@ stop_menu = False
 
 while not stop_menu :
 
-    print(headers)
     management_options = ['Exit']
     open_issues = []
     open_pull_requests = []
